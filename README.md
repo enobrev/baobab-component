@@ -49,12 +49,16 @@ One **very** important note, this library takes over React's `setState` method, 
                         }
                     }
                 },
-                local_state: {
+                local_thing: {
                     cursor: BaobabComponent.LOCAL_STATE,
                     default: null,
                     setState: oState => {
-                        console.log('local_state var has been changed to', oState.local_state);
+                        console.log('local_thing has been changed to', oState.local_thing);
                     }
+                },
+                other_local_thing: {
+                    cursor: BaobabComponent.LOCAL_STATE,
+                    default: null
                 }
             };
         }
@@ -83,6 +87,7 @@ One **very** important note, this library takes over React's `setState` method, 
 
         action = oEvent => {
             this.CURSORS.another_cursor.set('x', 1);
+            this.CURSORS.other_local_thing.set('What Ever.');
         };
     }
 ```
