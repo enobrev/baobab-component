@@ -1,0 +1,17 @@
+{
+    "presets": [
+        [
+            "env",
+            {
+                "targets":     {
+                    "browsers": ["last 2 versions", "> 5%"]
+                },
+                "debug":       false,
+                "modules":     false
+            }
+        ]
+    ],
+    "plugins": [
+        "transform-class-properties"
+    ]
+}
