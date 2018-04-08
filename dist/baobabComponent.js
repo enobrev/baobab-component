@@ -33,23 +33,23 @@ import Baobab from 'baobab';
     this.CURSORS.something.merge({something: 'else'});
 
  * Updating the cursor will re-render the current component because the current component's state will have changed.  As will
- * any other BaobabComponent that has been watching the same data.
+ * any other baobabComponent that has been watching the same data.
  *
  * The baobab update methods are documented here: https://github.com/Yomguithereal/baobab#updates
  */
 
-var BaobabComponent = function (_React$Component) {
-    _inherits(BaobabComponent, _React$Component);
+var baobabComponent = function (_React$Component) {
+    _inherits(baobabComponent, _React$Component);
 
     /**
      *
      * @param {Object} props
      * @param {Object} context
      */
-    function BaobabComponent(props, context) {
-        _classCallCheck(this, BaobabComponent);
+    function baobabComponent(props, context) {
+        _classCallCheck(this, baobabComponent);
 
-        var _this = _possibleConstructorReturn(this, (BaobabComponent.__proto__ || Object.getPrototypeOf(BaobabComponent)).call(this, props, context));
+        var _this = _possibleConstructorReturn(this, (baobabComponent.__proto__ || Object.getPrototypeOf(baobabComponent)).call(this, props, context));
 
         _this._treeUpdate = function (oEvent) {
             var aChangedPath = solveUpdate(oEvent.data.paths, _this._aPaths);
@@ -89,7 +89,7 @@ var BaobabComponent = function (_React$Component) {
 
             /*
             if (aChangedPath) {
-                console.log('BaobabComponent.Listener', this.constructor.name, aChangedPath, oEvent.type, oEvent.data.paths.map(aPath => aPath.join('.')));
+                console.log('baobabComponent.Listener', this.constructor.name, aChangedPath, oEvent.type, oEvent.data.paths.map(aPath => aPath.join('.')));
             }
             */
 
@@ -149,13 +149,13 @@ var BaobabComponent = function (_React$Component) {
             _this.CURSORS[oEvent.target.name].set(oEvent.target.value);
         };
 
-        if (!BaobabComponent.TREE) {
-            BaobabComponent.LOGGER('Please be sure to initialize using BaobabComponent.setTree with your BaobabTree', { level: 'error' });
-            throw new Error('Could not initialize BaobabComponent without a baobab tree');
+        if (!baobabComponent.TREE) {
+            baobabComponent.LOGGER('Please be sure to initialize using baobabComponent.setTree with your BaobabTree', { level: 'error' });
+            throw new Error('Could not initialize baobabComponent without a baobab tree');
         }
 
         _this.sLocalPrefix = UUID(); // Local Vars are prefixed by a UUID which is reset at components are initialized
-        BaobabComponent.TREE.set([_this.sLocalPrefix], {});
+        baobabComponent.TREE.set([_this.sLocalPrefix], {});
 
         _this._watch();
         return _this;
@@ -174,7 +174,7 @@ var BaobabComponent = function (_React$Component) {
      */
 
 
-    _createClass(BaobabComponent, [{
+    _createClass(baobabComponent, [{
         key: 'stateQueries',
 
 
@@ -219,9 +219,9 @@ var BaobabComponent = function (_React$Component) {
          * @return {{string: [string,*]}} | {{string: {cursor: [string,*], invokeRender: boolean, setState: (function({}): {})}, onUpdate: (function({}): {})}}
          */
         value: function stateQueries() {
-            console.error('You should override BaobabComponent.stateQueries');
+            console.error('You should override baobabComponent.stateQueries');
             console.trace();
-            BaobabComponent.LOGGER('You should override BaobabComponent.stateQueries', { level: 'error' });
+            baobabComponent.LOGGER('You should override baobabComponent.stateQueries', { level: 'error' });
             return {};
         }
     }, {
@@ -261,7 +261,7 @@ var BaobabComponent = function (_React$Component) {
             this._refresh();
 
             this._onWatcherData(); // Initialize
-            BaobabComponent.TREE.on('update', this._treeUpdate); // Watch
+            baobabComponent.TREE.on('update', this._treeUpdate); // Watch
         }
 
         /**
@@ -305,7 +305,7 @@ var BaobabComponent = function (_React$Component) {
         value: function componentWillUnmount() {
             this.bWatch = false;
 
-            BaobabComponent.TREE.unset([this.sLocalPrefix]);
+            baobabComponent.TREE.unset([this.sLocalPrefix]);
         }
     }, {
         key: 'shouldComponentUpdate',
@@ -339,12 +339,12 @@ var BaobabComponent = function (_React$Component) {
                     sPath = mQuery;
 
                     if (!_this2._checkPath(sPath)) {
-                        console.warn('BaobabComponent: Incomplete Path for Cursor', sPath);
+                        console.warn('baobabComponent: Incomplete Path for Cursor', sPath);
                         return;
                     }
                 } else {
                     if (mQuery.cursor !== undefined) {
-                        if (mQuery.cursor === BaobabComponent.LOCAL_STATE) {
+                        if (mQuery.cursor === baobabComponent.LOCAL_STATE) {
                             sPath = [_this2.sLocalPrefix, sKey];
                             _this2._oLocal.add(sKey);
                         } else {
@@ -358,13 +358,13 @@ var BaobabComponent = function (_React$Component) {
                     }
 
                     if (!_this2._checkPath(sPath)) {
-                        console.warn('BaobabComponent: Incomplete Path for Cursor', sPath);
+                        console.warn('baobabComponent: Incomplete Path for Cursor', sPath);
                         return;
                     }
 
                     if (mQuery.default !== undefined) {
-                        if (!BaobabComponent.TREE.exists(sPath) || !BaobabComponent.TREE.get(sPath)) {
-                            BaobabComponent.TREE.set(sPath, mQuery.default);
+                        if (!baobabComponent.TREE.exists(sPath) || !baobabComponent.TREE.get(sPath)) {
+                            baobabComponent.TREE.set(sPath, mQuery.default);
                         }
                     }
 
@@ -384,9 +384,9 @@ var BaobabComponent = function (_React$Component) {
                 if (sPath) {
                     _this2._oPaths[sKey] = sPath;
                     try {
-                        _this2.CURSORS[sKey] = BaobabComponent.TREE.select(sPath);
+                        _this2.CURSORS[sKey] = baobabComponent.TREE.select(sPath);
                     } catch (e) {
-                        console.warn('BaobabComponent: Key Unavailable for Cursor', sKey, sPath /* , e */);
+                        console.warn('baobabComponent: Key Unavailable for Cursor', sKey, sPath /* , e */);
                     }
                 }
             });
@@ -404,14 +404,14 @@ var BaobabComponent = function (_React$Component) {
                     // console.log('_refresh.getData', aPath);
 
                     if (!_this2._checkPath(aPath)) {
-                        // console.warn('BaobabComponent: Incomplete Path for Data', sStateParameter, aPath);
+                        // console.warn('baobabComponent: Incomplete Path for Data', sStateParameter, aPath);
                         return;
                     }
 
                     try {
-                        oData[sStateParameter] = BaobabComponent.TREE.get(aPath);
+                        oData[sStateParameter] = baobabComponent.TREE.get(aPath);
                     } catch (e) {
-                        // console.warn('BaobabComponent: Key Unavailable for Data', sStateParameter, aPath /* , e */);
+                        // console.warn('baobabComponent: Key Unavailable for Data', sStateParameter, aPath /* , e */);
                     }
                 });
 
@@ -426,16 +426,16 @@ var BaobabComponent = function (_React$Component) {
     }], [{
         key: 'setLoggerMethod',
         value: function setLoggerMethod(fLoggerMethod) {
-            BaobabComponent.LOGGER = fLoggerMethod;
+            baobabComponent.LOGGER = fLoggerMethod;
         }
     }, {
         key: 'setTree',
         value: function setTree(oTree) {
-            BaobabComponent.TREE = oTree;
+            baobabComponent.TREE = oTree;
         }
     }]);
 
-    return BaobabComponent;
+    return baobabComponent;
 }(React.Component);
 
 /**
@@ -461,12 +461,12 @@ var BaobabComponent = function (_React$Component) {
  *                                 paths?
  */
 
-BaobabComponent.LOCAL_STATE = 'LOCAL_STATE';
-BaobabComponent.TREE = new Baobab();
+baobabComponent.LOCAL_STATE = 'LOCAL_STATE';
+baobabComponent.TREE = new Baobab();
 
-BaobabComponent.LOGGER = function (sAction, oContext) {};
+baobabComponent.LOGGER = function (sAction, oContext) {};
 
-export default BaobabComponent;
+export default baobabComponent;
 function solveUpdate(affectedPaths, comparedPaths) {
     var l = affectedPaths.length;
 
