@@ -283,6 +283,8 @@ export default class BaobabComponent extends React.Component {
      * @private
      */
     _refresh() {
+        this._oFilters = new Set();
+        this._oSorts   = new Set();
         this._oBefore  = new Set();
         this._oAfter   = new Set();
         this._oPassive = new Set();
@@ -328,6 +330,14 @@ export default class BaobabComponent extends React.Component {
                     }
                 }
 
+                if (typeof mQuery.filter === 'function') {
+                    this._oFilters.add(sKey);
+                }
+
+                if (typeof mQuery.sort === 'function') {
+                    this._oSorts.add(sKey);
+                }
+
                 if (typeof mQuery.setState === 'function') {
                     this._oBefore.add(sKey);
                 }
@@ -368,11 +378,27 @@ export default class BaobabComponent extends React.Component {
                     return;
                 }
 
+                let oParameterData;
+
                 try {
-                    oData[sStateParameter] = BaobabComponent.TREE.get(aPath);
+                    oParameterData = BaobabComponent.TREE.get(aPath);
                 } catch (e) {
                     // console.warn('BaobabComponent: Key Unavailable for Data', sStateParameter, aPath /* , e */);
                 }
+
+                if (!oParameterData) {
+                    return;
+                }
+
+                if (this._oFilters.has(sStateParameter)) {
+                    oParameterData = this._oQueries[sStateParameter].filter(oParameterData);
+                }
+
+                if (this._oSorts.has(sStateParameter)) {
+                    oParameterData = this._oQueries[sStateParameter].sort(oParameterData);
+                }
+
+                oData[sStateParameter] = oParameterData;
             });
 
             return oData;
