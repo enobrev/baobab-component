@@ -1,6 +1,6 @@
 {
   "name": "baobab-component",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "A React Component that uses baobab to manage local and global state.",
   "main": "dist/baobabComponent.js",
   "repository": "https://github.com/enobrev/baobab-component",
@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-plugin-transform-class-properties": "^6.24.1"
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.6.1"
   }
 }
