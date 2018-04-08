@@ -55,7 +55,7 @@ export default class baobabComponent extends React.Component {
         this.sLocalPrefix = UUID(); // Local Vars are prefixed by a UUID which is reset at components are initialized
         baobabComponent.TREE.set([this.sLocalPrefix], {});
 
-        this._watch();
+        this._watch(props);
     }
 
     /**
@@ -141,18 +141,24 @@ export default class baobabComponent extends React.Component {
         this._onWatcherData();
     }
 
-    _watch() {
+    _watch = oProps => {
         this.state   = {};
         this.CURSORS = {};
         this.oData   = {};
 
-        this.bWatch   = true;
-        this._oQueries = this.stateQueries();
+        this.bWatch    = true;
+        this._oQueries = Object.assign({
+            PROPS: {
+                cursor:  baobabComponent.LOCAL_STATE,
+                default: oProps || {}
+            }
+        }, this.stateQueries());
+
         this._refresh();
 
         this._onWatcherData(); // Initialize
         baobabComponent.TREE.on('update', this._treeUpdate); // Watch
-    }
+    };
 
     /**
      * This method will get "update" events from ALL Baobab updates.
@@ -258,6 +264,10 @@ export default class baobabComponent extends React.Component {
             this.aChanged.push(sKey); // For Tracking and Debugging
         }
     };
+
+    UNSAFE_componentWillReceiveProps(oProps) {
+        this.CURSORS.PROPS.set(oProps);
+    }
 
     componentDidMount() {
         this.bWatch = true;

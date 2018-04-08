@@ -51,6 +51,25 @@ var baobabComponent = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (baobabComponent.__proto__ || Object.getPrototypeOf(baobabComponent)).call(this, props, context));
 
+        _this._watch = function (oProps) {
+            _this.state = {};
+            _this.CURSORS = {};
+            _this.oData = {};
+
+            _this.bWatch = true;
+            _this._oQueries = Object.assign({
+                PROPS: {
+                    cursor: baobabComponent.LOCAL_STATE,
+                    default: oProps || {}
+                }
+            }, _this.stateQueries());
+
+            _this._refresh();
+
+            _this._onWatcherData(); // Initialize
+            baobabComponent.TREE.on('update', _this._treeUpdate); // Watch
+        };
+
         _this._treeUpdate = function (oEvent) {
             var aChangedPath = solveUpdate(oEvent.data.paths, _this._aPaths);
             if (aChangedPath !== false) {
@@ -157,7 +176,7 @@ var baobabComponent = function (_React$Component) {
         _this.sLocalPrefix = UUID(); // Local Vars are prefixed by a UUID which is reset at components are initialized
         baobabComponent.TREE.set([_this.sLocalPrefix], {});
 
-        _this._watch();
+        _this._watch(props);
         return _this;
     }
 
@@ -249,20 +268,6 @@ var baobabComponent = function (_React$Component) {
             this._refresh();
             this._onWatcherData();
         }
-    }, {
-        key: '_watch',
-        value: function _watch() {
-            this.state = {};
-            this.CURSORS = {};
-            this.oData = {};
-
-            this.bWatch = true;
-            this._oQueries = this.stateQueries();
-            this._refresh();
-
-            this._onWatcherData(); // Initialize
-            baobabComponent.TREE.on('update', this._treeUpdate); // Watch
-        }
 
         /**
          * This method will get "update" events from ALL Baobab updates.
@@ -295,6 +300,11 @@ var baobabComponent = function (_React$Component) {
          * @private
          */
 
+    }, {
+        key: 'UNSAFE_componentWillReceiveProps',
+        value: function UNSAFE_componentWillReceiveProps(oProps) {
+            this.CURSORS.PROPS.set(oProps);
+        }
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
@@ -514,3 +524,4 @@ var UUID = function UUID() {
 
     return uuid.toLowerCase().replace(/\-/g, '');
 };
+//# sourceMappingURL=baobabComponent.js.map
