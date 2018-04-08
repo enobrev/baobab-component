@@ -194,18 +194,14 @@ export default class BaobabComponent extends React.Component {
         this.bChanged = false;
         this.aChanged = []; // For Tracking and Debugging
 
-        for (let sKey in oState) {
-            this._processState(oState, sKey);
-        }
+        aKeys.forEach(sKey => this._processState(oState, sKey));
 
         // Process anything new created by processing state
         let aCheckForNewKeys = new Set(Object.keys(oState));
         if (aCheckForNewKeys.size > aKeys.size) {
             let aNewKeys = new Set([ ...aCheckForNewKeys ].filter(x => !aKeys.has(x)));
             if (aNewKeys.size > 0) {
-                for (let sKey of aNewKeys) {
-                    this._processState(oState, sKey);
-                }
+                aNewKeys.forEach(sKey => this._processState(oState, sKey));
             }
         }
 
