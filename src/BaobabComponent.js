@@ -43,9 +43,8 @@ export default class BaobabComponent extends React.Component {
      *
      * @param {Object} props
      * @param {Object} context
-     * @param {Baobab} oBaobabTree
      */
-    constructor(props, context, oBaobabTree) {
+    constructor(props, context) {
         super(props, context);
 
         if (!BaobabComponent.TREE) {
