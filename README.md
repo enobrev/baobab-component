@@ -63,10 +63,6 @@ One **very** important note, this library takes over React's `setState` method, 
             };
         }
 
-        constuctor(props, context) {
-            super(props, context, Data)
-        }
-
         render() {
             const {
                 some_cursor:    aSome,
