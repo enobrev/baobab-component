@@ -297,43 +297,44 @@ export default class baobabComponent extends React.Component {
         this._oPassive = new Set();
         this._oLocal   = new Set();
         this._oPaths   = {};
+        this._oDynamic = {};
         this.CURSORS   = {};
 
         Object.keys(this._oQueries).map(sKey => {
             let mQuery    = this._oQueries[sKey];
             let bIsPath   = Array.isArray(mQuery);
-            let sPath;
+            let aPath;
 
             if (bIsPath) {
-                sPath     = mQuery;
+                aPath     = mQuery;
 
-                if (!this._checkPath(sPath)) {
-                    console.warn('baobabComponent: Incomplete Path for Cursor', sPath);
+                if (!this._checkPath(aPath)) {
+                    console.warn('baobabComponent: Incomplete Path for Cursor', aPath);
                     return;
                 }
             } else {
                 if (mQuery.cursor !== undefined) {
                     if (mQuery.cursor === baobabComponent.LOCAL_STATE) {
-                        sPath = [this.sLocalPrefix, sKey];
+                        aPath = [this.sLocalPrefix, sKey];
                         this._oLocal.add(sKey);
                     } else {
-                        sPath = mQuery.cursor
+                        aPath = mQuery.cursor
                     }
                 }
 
-                if (!sPath) {
-                    sPath = [this.sLocalPrefix, sKey]; // Default to treating as LOCAL_STATE
+                if (!aPath) {
+                    aPath = [this.sLocalPrefix, sKey]; // Default to treating as LOCAL_STATE
                     this._oLocal.add(sKey);
                 }
 
-                if (!this._checkPath(sPath)) {
-                    console.warn('baobabComponent: Incomplete Path for Cursor', sPath);
+                if (!this._checkPath(aPath)) {
+                    console.warn('baobabComponent: Incomplete Path for Cursor', aPath);
                     return;
                 }
 
                 if (mQuery.default !== undefined) {
-                    if (!baobabComponent.TREE.exists(sPath) || !baobabComponent.TREE.get(sPath)) {
-                        baobabComponent.TREE.set(sPath, mQuery.default);
+                    if (!baobabComponent.TREE.exists(aPath) || !baobabComponent.TREE.get(aPath)) {
+                        baobabComponent.TREE.set(aPath, mQuery.default);
                     }
                 }
 
@@ -350,12 +351,15 @@ export default class baobabComponent extends React.Component {
                 }
             }
 
-            if (sPath) {
-                this._oPaths[ sKey ] = sPath;
+            if (aPath) {
+
+
+
+                this._oPaths[ sKey ] = aPath;
                 try {
-                    this.CURSORS[sKey] = baobabComponent.TREE.select(sPath);
+                    this.CURSORS[sKey] = baobabComponent.TREE.select(aPath);
                 } catch (e) {
-                    console.warn('baobabComponent: Key Unavailable for Cursor', sKey, sPath /* , e */);
+                    console.warn('baobabComponent: Key Unavailable for Cursor', sKey, aPath /* , e */);
                 }
             }
         });

@@ -338,43 +338,44 @@ var baobabComponent = function (_React$Component) {
             this._oPassive = new Set();
             this._oLocal = new Set();
             this._oPaths = {};
+            this._oDynamic = {};
             this.CURSORS = {};
 
             Object.keys(this._oQueries).map(function (sKey) {
                 var mQuery = _this2._oQueries[sKey];
                 var bIsPath = Array.isArray(mQuery);
-                var sPath = void 0;
+                var aPath = void 0;
 
                 if (bIsPath) {
-                    sPath = mQuery;
+                    aPath = mQuery;
 
-                    if (!_this2._checkPath(sPath)) {
-                        console.warn('baobabComponent: Incomplete Path for Cursor', sPath);
+                    if (!_this2._checkPath(aPath)) {
+                        console.warn('baobabComponent: Incomplete Path for Cursor', aPath);
                         return;
                     }
                 } else {
                     if (mQuery.cursor !== undefined) {
                         if (mQuery.cursor === baobabComponent.LOCAL_STATE) {
-                            sPath = [_this2.sLocalPrefix, sKey];
+                            aPath = [_this2.sLocalPrefix, sKey];
                             _this2._oLocal.add(sKey);
                         } else {
-                            sPath = mQuery.cursor;
+                            aPath = mQuery.cursor;
                         }
                     }
 
-                    if (!sPath) {
-                        sPath = [_this2.sLocalPrefix, sKey]; // Default to treating as LOCAL_STATE
+                    if (!aPath) {
+                        aPath = [_this2.sLocalPrefix, sKey]; // Default to treating as LOCAL_STATE
                         _this2._oLocal.add(sKey);
                     }
 
-                    if (!_this2._checkPath(sPath)) {
-                        console.warn('baobabComponent: Incomplete Path for Cursor', sPath);
+                    if (!_this2._checkPath(aPath)) {
+                        console.warn('baobabComponent: Incomplete Path for Cursor', aPath);
                         return;
                     }
 
                     if (mQuery.default !== undefined) {
-                        if (!baobabComponent.TREE.exists(sPath) || !baobabComponent.TREE.get(sPath)) {
-                            baobabComponent.TREE.set(sPath, mQuery.default);
+                        if (!baobabComponent.TREE.exists(aPath) || !baobabComponent.TREE.get(aPath)) {
+                            baobabComponent.TREE.set(aPath, mQuery.default);
                         }
                     }
 
@@ -391,12 +392,13 @@ var baobabComponent = function (_React$Component) {
                     }
                 }
 
-                if (sPath) {
-                    _this2._oPaths[sKey] = sPath;
+                if (aPath) {
+
+                    _this2._oPaths[sKey] = aPath;
                     try {
-                        _this2.CURSORS[sKey] = baobabComponent.TREE.select(sPath);
+                        _this2.CURSORS[sKey] = baobabComponent.TREE.select(aPath);
                     } catch (e) {
-                        console.warn('baobabComponent: Key Unavailable for Cursor', sKey, sPath /* , e */);
+                        console.warn('baobabComponent: Key Unavailable for Cursor', sKey, aPath /* , e */);
                     }
                 }
             });
@@ -414,14 +416,14 @@ var baobabComponent = function (_React$Component) {
                     // console.log('_refresh.getData', aPath);
 
                     if (!_this2._checkPath(aPath)) {
-                        // console.warn('baobabComponent: Incomplete Path for Data', sStateParameter, aPath);
+                        console.warn('baobabComponent: Incomplete Path for Data', sStateParameter, aPath);
                         return;
                     }
 
                     try {
                         oData[sStateParameter] = baobabComponent.TREE.get(aPath);
                     } catch (e) {
-                        // console.warn('baobabComponent: Key Unavailable for Data', sStateParameter, aPath /* , e */);
+                        console.warn('baobabComponent: Key Unavailable for Data', sStateParameter, aPath /* , e */);
                     }
                 });
 
