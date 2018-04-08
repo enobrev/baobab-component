@@ -28,6 +28,8 @@ One **very** important note, this library takes over React's `setState` method, 
     import BaobabComponent from 'BaobabComponent';
     import Data from 'Data'; // Your project Baobab Tree
 
+    BaobabComponent.setTree(Data); // This can be done once in the project
+
     export default class MyComponent extends BaobabComponent {
         stateQueries() {
             const {id: sSomeId} = this.props;
