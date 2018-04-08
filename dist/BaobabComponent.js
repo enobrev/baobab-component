@@ -45,9 +45,8 @@ var BaobabComponent = function (_React$Component) {
      *
      * @param {Object} props
      * @param {Object} context
-     * @param {Baobab} oBaobabTree
      */
-    function BaobabComponent(props, context, oBaobabTree) {
+    function BaobabComponent(props, context) {
         _classCallCheck(this, BaobabComponent);
 
         var _this = _possibleConstructorReturn(this, (BaobabComponent.__proto__ || Object.getPrototypeOf(BaobabComponent)).call(this, props, context));
@@ -71,9 +70,9 @@ var BaobabComponent = function (_React$Component) {
             _this.bChanged = false;
             _this.aChanged = []; // For Tracking and Debugging
 
-            for (var sKey in oState) {
-                _this._processState(oState, sKey);
-            }
+            aKeys.forEach(function (sKey) {
+                return _this._processState(oState, sKey);
+            });
 
             // Process anything new created by processing state
             var aCheckForNewKeys = new Set(Object.keys(oState));
@@ -82,30 +81,9 @@ var BaobabComponent = function (_React$Component) {
                     return !aKeys.has(x);
                 }));
                 if (aNewKeys.size > 0) {
-                    var _iteratorNormalCompletion = true;
-                    var _didIteratorError = false;
-                    var _iteratorError = undefined;
-
-                    try {
-                        for (var _iterator = aNewKeys[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                            var _sKey = _step.value;
-
-                            _this._processState(oState, _sKey);
-                        }
-                    } catch (err) {
-                        _didIteratorError = true;
-                        _iteratorError = err;
-                    } finally {
-                        try {
-                            if (!_iteratorNormalCompletion && _iterator.return) {
-                                _iterator.return();
-                            }
-                        } finally {
-                            if (_didIteratorError) {
-                                throw _iteratorError;
-                            }
-                        }
-                    }
+                    aNewKeys.forEach(function (sKey) {
+                        return _this._processState(oState, sKey);
+                    });
                 }
             }
 
