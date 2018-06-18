@@ -57,6 +57,7 @@ var baobabComponent = function (_React$Component) {
             _this.oData = {};
 
             _this.bWatch = true;
+
             _this._oQueries = Object.assign({
                 PROPS: {
                     cursor: baobabComponent.LOCAL_STATE,
@@ -303,7 +304,9 @@ var baobabComponent = function (_React$Component) {
     }, {
         key: 'UNSAFE_componentWillReceiveProps',
         value: function UNSAFE_componentWillReceiveProps(oProps) {
-            this.CURSORS.PROPS.set(oProps);
+            if (baobabComponent.FOLLOW_PROPS) {
+                this.CURSORS.PROPS.set(oProps);
+            }
         }
     }, {
         key: 'componentDidMount',
@@ -393,7 +396,6 @@ var baobabComponent = function (_React$Component) {
                 }
 
                 if (aPath) {
-
                     _this2._oPaths[sKey] = aPath;
                     try {
                         _this2.CURSORS[sKey] = baobabComponent.TREE.select(aPath);
@@ -416,14 +418,14 @@ var baobabComponent = function (_React$Component) {
                     // console.log('_refresh.getData', aPath);
 
                     if (!_this2._checkPath(aPath)) {
-                        console.warn('baobabComponent: Incomplete Path for Data', sStateParameter, aPath);
+                        // console.warn('baobabComponent: Incomplete Path for Data', sStateParameter, aPath);
                         return;
                     }
 
                     try {
                         oData[sStateParameter] = baobabComponent.TREE.get(aPath);
                     } catch (e) {
-                        console.warn('baobabComponent: Key Unavailable for Data', sStateParameter, aPath /* , e */);
+                        // console.warn('baobabComponent: Key Unavailable for Data', sStateParameter, aPath /* , e */);
                     }
                 });
 
@@ -444,6 +446,11 @@ var baobabComponent = function (_React$Component) {
         key: 'setTree',
         value: function setTree(oTree) {
             baobabComponent.TREE = oTree;
+        }
+    }, {
+        key: 'setFollowProps',
+        value: function setFollowProps(bFollowProps) {
+            baobabComponent.FOLLOW_PROPS = bFollowProps;
         }
     }]);
 
@@ -475,6 +482,7 @@ var baobabComponent = function (_React$Component) {
 
 baobabComponent.LOCAL_STATE = 'LOCAL_STATE';
 baobabComponent.TREE = new Baobab();
+baobabComponent.FOLLOW_PROPS = false;
 
 baobabComponent.LOGGER = function (sAction, oContext) {};
 
@@ -526,4 +534,3 @@ var UUID = function UUID() {
 
     return uuid.toLowerCase().replace(/\-/g, '');
 };
-//# sourceMappingURL=baobabComponent.js.map

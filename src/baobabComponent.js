@@ -29,8 +29,9 @@ import Baobab           from 'baobab';
  */
 
 export default class baobabComponent extends React.Component {
-    static LOCAL_STATE = 'LOCAL_STATE';
-    static TREE        = new Baobab();
+    static LOCAL_STATE  = 'LOCAL_STATE';
+    static TREE         = new Baobab();
+    static FOLLOW_PROPS = false;
 
     /**
      *
@@ -38,6 +39,7 @@ export default class baobabComponent extends React.Component {
      * @param {Object} [oContext]
      */
     static LOGGER      = (sAction, oContext) => {};
+
 
     /**
      *
@@ -68,6 +70,10 @@ export default class baobabComponent extends React.Component {
 
     static setTree(oTree) {
         baobabComponent.TREE = oTree;
+    }
+
+    static setFollowProps(bFollowProps) {
+        baobabComponent.FOLLOW_PROPS = bFollowProps;
     }
 
     /**
@@ -147,6 +153,7 @@ export default class baobabComponent extends React.Component {
         this.oData   = {};
 
         this.bWatch    = true;
+
         this._oQueries = Object.assign({
             PROPS: {
                 cursor:  baobabComponent.LOCAL_STATE,
@@ -266,7 +273,9 @@ export default class baobabComponent extends React.Component {
     };
 
     UNSAFE_componentWillReceiveProps(oProps) {
-        this.CURSORS.PROPS.set(oProps);
+        if (baobabComponent.FOLLOW_PROPS) {
+            this.CURSORS.PROPS.set(oProps);
+        }
     }
 
     componentDidMount() {
@@ -352,9 +361,6 @@ export default class baobabComponent extends React.Component {
             }
 
             if (aPath) {
-
-
-
                 this._oPaths[ sKey ] = aPath;
                 try {
                     this.CURSORS[sKey] = baobabComponent.TREE.select(aPath);
