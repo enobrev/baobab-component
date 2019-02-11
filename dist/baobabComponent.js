@@ -107,13 +107,17 @@ var baobabComponent = function (_React$Component) {
                 }
             }
 
-            /*
-            if (aChangedPath) {
-                console.log('baobabComponent.Listener', this.constructor.name, aChangedPath, oEvent.type, oEvent.data.paths.map(aPath => aPath.join('.')));
+            if (baobabComponent.DEBUG_LEVEL >= 2) {
+                if (aChangedPath) {
+                    console.log('baobabComponent.Listener', _this.constructor.name, aChangedPath, oEvent.type, oEvent.data.paths.map(function (aPath) {
+                        return aPath.join('.');
+                    }));
+                }
             }
-            */
 
-            //console.log('AFTER', this.constructor.name, this.aAfter);
+            if (baobabComponent.DEBUG_LEVEL >= 1) {
+                console.log('AFTER', _this.constructor.name, _this.aAfter);
+            }
 
             // Putting our updated state into this.oData
             _this.oData = oState;
@@ -130,7 +134,9 @@ var baobabComponent = function (_React$Component) {
             };
 
             if (_this.bChanged) {
-                // console.log('CHANGED', this.constructor.name, this.aChanged, oState);
+                if (baobabComponent.DEBUG_LEVEL >= 1) {
+                    console.log('CHANGED', _this.constructor.name, _this.aChanged, oState);
+                }
                 if (oEvent) {
                     // Handler
                     _this.setState(oState, fDone);
@@ -140,7 +146,9 @@ var baobabComponent = function (_React$Component) {
                     fDone();
                 }
             } else {
-                //console.log('UNCHANGED', this.constructor.name);
+                if (baobabComponent.DEBUG_LEVEL >= 3) {
+                    console.log('UNCHANGED', _this.constructor.name);
+                }
                 fDone();
             }
         };
@@ -415,17 +423,23 @@ var baobabComponent = function (_React$Component) {
                 Object.keys(_this2._oPaths).forEach(function (sStateParameter) {
                     var aPath = _this2._oPaths[sStateParameter];
 
-                    // console.log('_refresh.getData', aPath);
+                    if (baobabComponent.DEBUG_LEVEL >= 3) {
+                        console.log('_refresh.getData', aPath);
+                    }
 
                     if (!_this2._checkPath(aPath)) {
-                        // console.warn('baobabComponent: Incomplete Path for Data', sStateParameter, aPath);
+                        if (baobabComponent.DEBUG_LEVEL >= 2) {
+                            console.warn('baobabComponent: Incomplete Path for Data', sStateParameter, aPath);
+                        }
                         return;
                     }
 
                     try {
                         oData[sStateParameter] = baobabComponent.TREE.get(aPath);
                     } catch (e) {
-                        // console.warn('baobabComponent: Key Unavailable for Data', sStateParameter, aPath /* , e */);
+                        if (baobabComponent.DEBUG_LEVEL >= 2) {
+                            console.warn('baobabComponent: Key Unavailable for Data', sStateParameter, aPath /* , e */);
+                        }
                     }
                 });
 
@@ -451,6 +465,11 @@ var baobabComponent = function (_React$Component) {
         key: 'setFollowProps',
         value: function setFollowProps(bFollowProps) {
             baobabComponent.FOLLOW_PROPS = bFollowProps;
+        }
+    }, {
+        key: 'setDebugLevel',
+        value: function setDebugLevel(iDebugLevel) {
+            baobabComponent.DEBUG_LEVEL = iDebugLevel;
         }
     }]);
 
@@ -483,6 +502,7 @@ var baobabComponent = function (_React$Component) {
 baobabComponent.LOCAL_STATE = 'LOCAL_STATE';
 baobabComponent.TREE = new Baobab();
 baobabComponent.FOLLOW_PROPS = false;
+baobabComponent.DEBUG_LEVEL = 0;
 
 baobabComponent.LOGGER = function (sAction, oContext) {};
 

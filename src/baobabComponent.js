@@ -32,6 +32,7 @@ export default class baobabComponent extends React.Component {
     static LOCAL_STATE  = 'LOCAL_STATE';
     static TREE         = new Baobab();
     static FOLLOW_PROPS = false;
+    static DEBUG_LEVEL  = 0;
 
     /**
      *
@@ -74,6 +75,10 @@ export default class baobabComponent extends React.Component {
 
     static setFollowProps(bFollowProps) {
         baobabComponent.FOLLOW_PROPS = bFollowProps;
+    }
+
+    static setDebugLevel(iDebugLevel) {
+        baobabComponent.DEBUG_LEVEL = iDebugLevel;
     }
 
     /**
@@ -217,13 +222,16 @@ export default class baobabComponent extends React.Component {
             }
         }
 
-        /*
-        if (aChangedPath) {
-            console.log('baobabComponent.Listener', this.constructor.name, aChangedPath, oEvent.type, oEvent.data.paths.map(aPath => aPath.join('.')));
+        if (baobabComponent.DEBUG_LEVEL >= 2) {
+            if (aChangedPath) {
+                console.log('baobabComponent.Listener', this.constructor.name, aChangedPath, oEvent.type, oEvent.data.paths.map(aPath => aPath.join('.')));
+            }
         }
-        */
 
-        //console.log('AFTER', this.constructor.name, this.aAfter);
+
+        if (baobabComponent.DEBUG_LEVEL >= 1) {
+            console.log('AFTER', this.constructor.name, this.aAfter);
+        }
 
         // Putting our updated state into this.oData
         this.oData = oState;
@@ -234,7 +242,9 @@ export default class baobabComponent extends React.Component {
         let fDone = () => this.aAfter.map(sKey => this._oQueries[sKey].onUpdate(oState));
 
         if (this.bChanged) {
-            // console.log('CHANGED', this.constructor.name, this.aChanged, oState);
+            if (baobabComponent.DEBUG_LEVEL >= 1) {
+                console.log('CHANGED', this.constructor.name, this.aChanged, oState);
+            }
             if (oEvent) { // Handler
                 this.setState(oState, fDone);
             } else {      // Virgin
@@ -242,7 +252,9 @@ export default class baobabComponent extends React.Component {
                 fDone();
             }
         } else {
-            //console.log('UNCHANGED', this.constructor.name);
+            if (baobabComponent.DEBUG_LEVEL >= 3) {
+                console.log('UNCHANGED', this.constructor.name);
+            }
             fDone();
         }
     };
@@ -380,17 +392,23 @@ export default class baobabComponent extends React.Component {
             Object.keys(this._oPaths).forEach(sStateParameter => {
                 let aPath = this._oPaths[sStateParameter];
 
-                // console.log('_refresh.getData', aPath);
+                if (baobabComponent.DEBUG_LEVEL >= 3) {
+                    console.log('_refresh.getData', aPath);
+                }
 
                 if (!this._checkPath(aPath)) {
-                    // console.warn('baobabComponent: Incomplete Path for Data', sStateParameter, aPath);
+                    if (baobabComponent.DEBUG_LEVEL >= 2) {
+                        console.warn('baobabComponent: Incomplete Path for Data', sStateParameter, aPath);
+                    }
                     return;
                 }
 
                 try {
                     oData[sStateParameter] = baobabComponent.TREE.get(aPath);
                 } catch (e) {
-                    // console.warn('baobabComponent: Key Unavailable for Data', sStateParameter, aPath /* , e */);
+                    if (baobabComponent.DEBUG_LEVEL >= 2) {
+                        console.warn('baobabComponent: Key Unavailable for Data', sStateParameter, aPath /* , e */);
+                    }
                 }
             });
 
