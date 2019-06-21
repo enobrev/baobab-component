@@ -157,14 +157,17 @@ export default class baobabComponent extends React.Component {
         this.CURSORS = {};
         this.oData   = {};
 
-        this.bWatch    = true;
+        this.bWatch  = true;
 
-        this._oQueries = Object.assign({
-            PROPS: {
+        let oQueries = {};
+        if (baobabComponent.FOLLOW_PROPS) {
+            oQueries.PROPS = {
                 cursor:  baobabComponent.LOCAL_STATE,
                 default: oProps || {}
-            }
-        }, this.stateQueries());
+            };
+        }
+
+        this._oQueries = Object.assign(oQueries, this.stateQueries());
 
         this._refresh();
 
