@@ -1,6 +1,6 @@
 {
   "name": "baobab-component",
-  "version": "0.9.6",
+  "version": "0.9.7",
   "description": "A React Component that uses baobab to manage local and global state.",
   "main": "dist/baobabComponent.js",
   "repository": "https://github.com/enobrev/baobab-component",
