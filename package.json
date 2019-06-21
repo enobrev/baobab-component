@@ -8,13 +8,14 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
+    "@babel/cli": "^7.4.4",
     "baobab": "^2.5.2",
-    "react": "^16.3.1",
+    "react": "^16.8.6",
     "react-addons-shallow-compare": "^15.6.2"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-preset-env": "^1.6.1"
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/preset-env": "^7.4.5"
   }
 }

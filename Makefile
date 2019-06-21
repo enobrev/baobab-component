@@ -3,13 +3,13 @@
 build: clean production
 
 production:
-	babel ./src --out-dir ./dist
+	yarn run babel ./src --out-dir ./dist
 
 development:
-	babel ./src --source-maps --out-dir ./dist
+	yarn run babel ./src --source-maps --out-dir ./dist
 
 watch:
-	babel ./src --source-maps --watch --out-dir ./dist
+	yarn run babel ./src --source-maps --watch --out-dir ./dist
 
 clean:
 	rm ./dist -Rf
